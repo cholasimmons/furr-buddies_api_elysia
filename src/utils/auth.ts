@@ -36,7 +36,6 @@ export const auth = betterAuth({
 //                     operation.tags = ['Better Auth']
 //                 }
 //             }
-
 //             return reference
 //         }) as Promise<any>,
 //     components: getSchema().then(({ components }) => components) as Promise<any>
