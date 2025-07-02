@@ -5,7 +5,7 @@ import { PrismaClient } from "../generated/prisma";
  
 const prisma = new PrismaClient();
 export const auth = betterAuth({
-    basePath: '',
+    basePath: '/auth',
     database: prismaAdapter(prisma, {
         provider: "postgresql", // or "mysql", "postgresql", ...etc
     }),
@@ -13,8 +13,8 @@ export const auth = betterAuth({
         enabled: true
     },
     plugins: [
-        twoFactor(),
-        organization()
+        // twoFactor(),
+        // organization()
     ]
 });
 

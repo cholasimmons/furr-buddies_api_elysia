@@ -1,29 +1,42 @@
-import { Context, Elysia } from 'elysia'
+import { Context, Elysia, ValidationError } from 'elysia'
 import { auth } from '../utils/auth'
 
-const betterAuthView = (context: Context) => {
-  console.log("💻 BetterAuth endpoint reached ", context.request.method, context.request.url);
+export const betterAuthView = (request: Request): Promise<Response> => {
+  console.log("💻 BetterAuth endpoint reached ", request.method, request.url);
   
     const BETTER_AUTH_ACCEPT_METHODS = ["POST", "GET"]
     // validate request method
-    if(BETTER_AUTH_ACCEPT_METHODS.includes(context.request.method)) {
-        return auth.handler(context.request);
-    } else {
-        context.status(405)
+    if(!BETTER_AUTH_ACCEPT_METHODS.includes(request.method)) {
+        return Promise.reject(
+            new Response(JSON.stringify({
+                message: 'Method not Allowed',
+                code: 405
+            }), {
+                status: 405,
+                headers: { 'Content-Type': 'application/json' }
+            })
+        );
     }
+
+        return auth.handler(request);
+    
 }
 
 // user middleware (compute user and session and pass to routes)
 export const betterAuthMiddleware = new Elysia({ name: 'better-auth' })
-    .mount('/auth', auth.handler) 
+    // .mount('/auth', async (request: Request): Promise<Response> => { return await auth.handler(request) })
+    // .all('/auth/*', betterAuthView)
     .macro({
         auth: {
-            async resolve({ status, request: { headers } }) {
+            async resolve({ set, status, request: { headers } }:Context) {
                 const session = await auth.api.getSession({
                     headers
                 })
 
-                if (!session) return status(401)
+                if (!session) {
+                    set.status = 401;
+                    return status(401);
+                }
 
                 return {
                     user: session.user,
@@ -31,4 +44,4 @@ export const betterAuthMiddleware = new Elysia({ name: 'better-auth' })
                 }
             }
         }
-    })
+    });
