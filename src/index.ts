@@ -8,9 +8,9 @@ import { auth } from "./utils/auth";
 const PORT = Bun.env.PORT ?? 3000;
 
 const authHandler = new Elysia({ prefix: '/auth'})
-    .mount("*", auth.handler)
+    .mount("*", betterAuthView)
     .get('/', () => { return {
-        message: 'Auth working', code: 200
+        message: 'Auth working, but you\'re using the wrong method', code: 200
     } });
 
 
