@@ -12,6 +12,8 @@
     "@prisma/client": "^6.11.0",
     "better-auth": "^1.2.12",
     "elysia": "latest",
+    "elysia-http-status-code": "^1.0.9",
+    "ioredis": "^5.6.1",
     "logestic": "^1.2.4"
   },
   "devDependencies": {

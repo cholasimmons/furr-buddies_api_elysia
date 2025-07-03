@@ -1,27 +1,25 @@
 import { Elysia } from "elysia";
 import cors from "@elysiajs/cors";
 import swagger from "@elysiajs/swagger";
-import { betterAuthMiddleware, betterAuthView } from "./middleware/betterAuth";
+import { betterAuthMiddleware } from "~middleware/betterAuth";
 import { Logestic } from "logestic";
-import { auth } from "./utils/auth";
+import { usersController, authController } from "~modules/index";
+import { OpenAPI } from "~utils/auth";
+import { HttpStatusCode } from "elysia-http-status-code";
 
 const PORT = Bun.env.PORT ?? 3000;
 
-const authHandler = new Elysia({ prefix: '/auth'})
-    .mount("*", betterAuthView)
-    .get('/', () => { return {
-        message: 'Auth working, but you\'re using the wrong method', code: 200
-    } });
-
-
-
-const app = new Elysia()
+const app = new Elysia({ detail: { tags: ['Root'] } })
+    // Cool console logging
     .use(Logestic.preset('common'))
+    
+    // Elysia OpenAPI (Swagger) plugin
     .use(
         swagger({
+            autoDarkMode: true,
             documentation: {
-                // components: await OpenAPI.components,
-                // paths: await OpenAPI.getPaths()
+                components: await OpenAPI.components,
+                paths: await OpenAPI.getPaths()
             }
         })
     )
@@ -33,14 +31,16 @@ const app = new Elysia()
                 allowedHeaders: ['Content-Type', 'Authorization']
             })
         )
+    .use(HttpStatusCode())
 
     .use(betterAuthMiddleware)
-    .use(authHandler)
+    .use(authController)
     .get("/", () => "Hello Elysia")
     .get("/ping", () => "Pong")
     .get("/user", ({ user }:any) => user, {
-    auth: true
+        auth: true
     })
+    .use(usersController)
     .listen(PORT);
 
 console.log(
