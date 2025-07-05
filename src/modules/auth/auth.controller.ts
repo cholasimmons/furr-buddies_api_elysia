@@ -5,8 +5,6 @@ export const authController = new Elysia({
     prefix: '/auth',
     detail: { tags: ['Auth'] }
 })
-    // Mount Better Auth handler (basePath set in /utils/auth.ts)
-    .mount(betterAuthView)
 
     // Dummy endpoint
     .get('/', () => { return {

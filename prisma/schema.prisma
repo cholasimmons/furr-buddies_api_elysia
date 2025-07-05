@@ -40,6 +40,12 @@ model User {
   twoFactorEnabled Boolean?
   twofactors       TwoFactor[]
 
+  role       String?
+  banned     Boolean?
+  banReason  String?
+  banExpires DateTime?
+  profile    Profile?  @relation("user_profile")
+
   @@unique([email])
   @@map("user")
 }
@@ -55,6 +61,8 @@ model Session {
   userId               String
   user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   activeOrganizationId String?
+
+  impersonatedBy String?
 
   @@unique([token])
   @@map("session")
@@ -100,6 +108,14 @@ model Organization {
   members     Member[]
   invitations Invitation[]
 
+  type         OrgType // e.g. "vet_clinic", "pet_store", "shelter"
+  address      Address? @relation("org_address")
+  contactEmail String?
+  phone        String?
+  licenseId    String? // government-issued vet license
+  services     Json? // ["vaccination", "surgery", "boarding", ...]
+  isActive     Boolean  @default(false)
+
   @@unique([slug])
   @@map("organization")
 }
@@ -140,8 +156,50 @@ model TwoFactor {
   @@map("twoFactor")
 }
 
+model Profile {
+  id          String   @id @default(cuid())
+  firstname   String
+  lastname    String
+  gender      Gender
+  dateOfBirth DateTime
+  idNumber    String   @unique
+  idType      IdType
+  userId      String   @unique
+  user        User     @relation("user_profile", fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique(id)
+}
+
+model Address {
+  id           String       @id @default(uuid())
+  number       String
+  street       String
+  city         String
+  province     String
+  orgId        String       @unique
+  organization Organization @relation("org_address", fields: [orgId], references: [id])
+}
 
 enum Role {
   USER
   ADMIN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum IdType {
+  NRC
+  PASSPORT
+}
+
+enum OrgType {
+  CLINIC
+  STORE
+  SHELTER
 }

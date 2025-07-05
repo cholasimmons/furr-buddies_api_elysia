@@ -14,6 +14,10 @@ export const UserPlain = t.Object(
     createdAt: t.Date(),
     updatedAt: t.Date(),
     twoFactorEnabled: __nullable__(t.Boolean()),
+    role: __nullable__(t.String()),
+    banned: __nullable__(t.Boolean()),
+    banReason: __nullable__(t.String()),
+    banExpires: __nullable__(t.Date()),
   },
   { additionalProperties: false },
 );
@@ -32,6 +36,7 @@ export const UserRelations = t.Object(
           userAgent: __nullable__(t.String()),
           userId: t.String(),
           activeOrganizationId: __nullable__(t.String()),
+          impersonatedBy: __nullable__(t.String()),
         },
         { additionalProperties: false },
       ),
@@ -98,6 +103,28 @@ export const UserRelations = t.Object(
       ),
       { additionalProperties: false },
     ),
+    profile: __nullable__(
+      t.Object(
+        {
+          id: t.String(),
+          firstname: t.String(),
+          lastname: t.String(),
+          gender: t.Union(
+            [t.Literal("MALE"), t.Literal("FEMALE"), t.Literal("OTHER")],
+            { additionalProperties: false },
+          ),
+          dateOfBirth: t.Date(),
+          idNumber: t.String(),
+          idType: t.Union([t.Literal("NRC"), t.Literal("PASSPORT")], {
+            additionalProperties: false,
+          }),
+          userId: t.String(),
+          createdAt: t.Date(),
+          updatedAt: t.Date(),
+        },
+        { additionalProperties: false },
+      ),
+    ),
   },
   { additionalProperties: false },
 );
@@ -111,6 +138,10 @@ export const UserPlainInputCreate = t.Object(
     createdAt: t.Date(),
     updatedAt: t.Date(),
     twoFactorEnabled: t.Optional(__nullable__(t.Boolean())),
+    role: t.Optional(__nullable__(t.String())),
+    banned: t.Optional(__nullable__(t.Boolean())),
+    banReason: t.Optional(__nullable__(t.String())),
+    banExpires: t.Optional(__nullable__(t.Date())),
   },
   { additionalProperties: false },
 );
@@ -124,6 +155,10 @@ export const UserPlainInputUpdate = t.Object(
     createdAt: t.Optional(t.Date()),
     updatedAt: t.Optional(t.Date()),
     twoFactorEnabled: t.Optional(__nullable__(t.Boolean())),
+    role: t.Optional(__nullable__(t.String())),
+    banned: t.Optional(__nullable__(t.Boolean())),
+    banReason: t.Optional(__nullable__(t.String())),
+    banExpires: t.Optional(__nullable__(t.Date())),
   },
   { additionalProperties: false },
 );
@@ -204,6 +239,19 @@ export const UserRelationsInputCreate = t.Object(
               },
               { additionalProperties: false },
             ),
+            { additionalProperties: false },
+          ),
+        },
+        { additionalProperties: false },
+      ),
+    ),
+    profile: t.Optional(
+      t.Object(
+        {
+          connect: t.Object(
+            {
+              id: t.String({ additionalProperties: false }),
+            },
             { additionalProperties: false },
           ),
         },
@@ -342,6 +390,20 @@ export const UserRelationsInputUpdate = t.Partial(
           { additionalProperties: false },
         ),
       ),
+      profile: t.Partial(
+        t.Object(
+          {
+            connect: t.Object(
+              {
+                id: t.String({ additionalProperties: false }),
+              },
+              { additionalProperties: false },
+            ),
+            disconnect: t.Boolean(),
+          },
+          { additionalProperties: false },
+        ),
+      ),
     },
     { additionalProperties: false },
   ),
@@ -363,6 +425,10 @@ export const UserWhere = t.Partial(
           createdAt: t.Date(),
           updatedAt: t.Date(),
           twoFactorEnabled: t.Boolean(),
+          role: t.String(),
+          banned: t.Boolean(),
+          banReason: t.String(),
+          banExpires: t.Date(),
         },
         { additionalProperties: false },
       ),
@@ -426,6 +492,10 @@ export const UserWhereUnique = t.Recursive(
               createdAt: t.Date(),
               updatedAt: t.Date(),
               twoFactorEnabled: t.Boolean(),
+              role: t.String(),
+              banned: t.Boolean(),
+              banReason: t.String(),
+              banExpires: t.Date(),
             },
             { additionalProperties: false },
           ),
@@ -452,6 +522,11 @@ export const UserSelect = t.Partial(
       invitations: t.Boolean(),
       twoFactorEnabled: t.Boolean(),
       twofactors: t.Boolean(),
+      role: t.Boolean(),
+      banned: t.Boolean(),
+      banReason: t.Boolean(),
+      banExpires: t.Boolean(),
+      profile: t.Boolean(),
       _count: t.Boolean(),
     },
     { additionalProperties: false },
@@ -466,6 +541,7 @@ export const UserInclude = t.Partial(
       members: t.Boolean(),
       invitations: t.Boolean(),
       twofactors: t.Boolean(),
+      profile: t.Boolean(),
       _count: t.Boolean(),
     },
     { additionalProperties: false },
@@ -497,6 +573,18 @@ export const UserOrderBy = t.Partial(
         additionalProperties: false,
       }),
       twoFactorEnabled: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      role: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      banned: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      banReason: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      banExpires: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
     },

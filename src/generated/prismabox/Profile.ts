@@ -4,23 +4,28 @@ import { __transformDate__ } from "./__transformDate__";
 
 import { __nullable__ } from "./__nullable__";
 
-export const SessionPlain = t.Object(
+export const ProfilePlain = t.Object(
   {
     id: t.String(),
-    expiresAt: t.Date(),
-    token: t.String(),
+    firstname: t.String(),
+    lastname: t.String(),
+    gender: t.Union(
+      [t.Literal("MALE"), t.Literal("FEMALE"), t.Literal("OTHER")],
+      { additionalProperties: false },
+    ),
+    dateOfBirth: t.Date(),
+    idNumber: t.String(),
+    idType: t.Union([t.Literal("NRC"), t.Literal("PASSPORT")], {
+      additionalProperties: false,
+    }),
+    userId: t.String(),
     createdAt: t.Date(),
     updatedAt: t.Date(),
-    ipAddress: __nullable__(t.String()),
-    userAgent: __nullable__(t.String()),
-    userId: t.String(),
-    activeOrganizationId: __nullable__(t.String()),
-    impersonatedBy: __nullable__(t.String()),
   },
   { additionalProperties: false },
 );
 
-export const SessionRelations = t.Object(
+export const ProfileRelations = t.Object(
   {
     user: t.Object(
       {
@@ -43,33 +48,44 @@ export const SessionRelations = t.Object(
   { additionalProperties: false },
 );
 
-export const SessionPlainInputCreate = t.Object(
+export const ProfilePlainInputCreate = t.Object(
   {
-    expiresAt: t.Date(),
-    token: t.String(),
-    createdAt: t.Date(),
-    updatedAt: t.Date(),
-    ipAddress: t.Optional(__nullable__(t.String())),
-    userAgent: t.Optional(__nullable__(t.String())),
-    impersonatedBy: t.Optional(__nullable__(t.String())),
+    firstname: t.String(),
+    lastname: t.String(),
+    gender: t.Union(
+      [t.Literal("MALE"), t.Literal("FEMALE"), t.Literal("OTHER")],
+      { additionalProperties: false },
+    ),
+    dateOfBirth: t.Date(),
+    idNumber: t.String(),
+    idType: t.Union([t.Literal("NRC"), t.Literal("PASSPORT")], {
+      additionalProperties: false,
+    }),
   },
   { additionalProperties: false },
 );
 
-export const SessionPlainInputUpdate = t.Object(
+export const ProfilePlainInputUpdate = t.Object(
   {
-    expiresAt: t.Optional(t.Date()),
-    token: t.Optional(t.String()),
-    createdAt: t.Optional(t.Date()),
-    updatedAt: t.Optional(t.Date()),
-    ipAddress: t.Optional(__nullable__(t.String())),
-    userAgent: t.Optional(__nullable__(t.String())),
-    impersonatedBy: t.Optional(__nullable__(t.String())),
+    firstname: t.Optional(t.String()),
+    lastname: t.Optional(t.String()),
+    gender: t.Optional(
+      t.Union([t.Literal("MALE"), t.Literal("FEMALE"), t.Literal("OTHER")], {
+        additionalProperties: false,
+      }),
+    ),
+    dateOfBirth: t.Optional(t.Date()),
+    idNumber: t.Optional(t.String()),
+    idType: t.Optional(
+      t.Union([t.Literal("NRC"), t.Literal("PASSPORT")], {
+        additionalProperties: false,
+      }),
+    ),
   },
   { additionalProperties: false },
 );
 
-export const SessionRelationsInputCreate = t.Object(
+export const ProfileRelationsInputCreate = t.Object(
   {
     user: t.Object(
       {
@@ -86,7 +102,7 @@ export const SessionRelationsInputCreate = t.Object(
   { additionalProperties: false },
 );
 
-export const SessionRelationsInputUpdate = t.Partial(
+export const ProfileRelationsInputUpdate = t.Partial(
   t.Object(
     {
       user: t.Object(
@@ -105,7 +121,7 @@ export const SessionRelationsInputUpdate = t.Partial(
   ),
 );
 
-export const SessionWhere = t.Partial(
+export const ProfileWhere = t.Partial(
   t.Recursive(
     (Self) =>
       t.Object(
@@ -114,23 +130,28 @@ export const SessionWhere = t.Partial(
           NOT: t.Union([Self, t.Array(Self, { additionalProperties: false })]),
           OR: t.Array(Self, { additionalProperties: false }),
           id: t.String(),
-          expiresAt: t.Date(),
-          token: t.String(),
+          firstname: t.String(),
+          lastname: t.String(),
+          gender: t.Union(
+            [t.Literal("MALE"), t.Literal("FEMALE"), t.Literal("OTHER")],
+            { additionalProperties: false },
+          ),
+          dateOfBirth: t.Date(),
+          idNumber: t.String(),
+          idType: t.Union([t.Literal("NRC"), t.Literal("PASSPORT")], {
+            additionalProperties: false,
+          }),
+          userId: t.String(),
           createdAt: t.Date(),
           updatedAt: t.Date(),
-          ipAddress: t.String(),
-          userAgent: t.String(),
-          userId: t.String(),
-          activeOrganizationId: t.String(),
-          impersonatedBy: t.String(),
         },
         { additionalProperties: false },
       ),
-    { $id: "Session" },
+    { $id: "Profile" },
   ),
 );
 
-export const SessionWhereUnique = t.Recursive(
+export const ProfileWhereUnique = t.Recursive(
   (Self) =>
     t.Intersect(
       [
@@ -138,11 +159,9 @@ export const SessionWhereUnique = t.Recursive(
           t.Object(
             {
               id: t.String(),
-              token: t.String(),
-              token: t.Object(
-                { token: t.String() },
-                { additionalProperties: false },
-              ),
+              idNumber: t.String(),
+              userId: t.String(),
+              id: t.Object({ id: t.String() }, { additionalProperties: false }),
             },
             { additionalProperties: false },
           ),
@@ -151,12 +170,10 @@ export const SessionWhereUnique = t.Recursive(
         t.Union(
           [
             t.Object({ id: t.String() }),
-            t.Object({ token: t.String() }),
+            t.Object({ idNumber: t.String() }),
+            t.Object({ userId: t.String() }),
             t.Object({
-              token: t.Object(
-                { token: t.String() },
-                { additionalProperties: false },
-              ),
+              id: t.Object({ id: t.String() }, { additionalProperties: false }),
             }),
           ],
           { additionalProperties: false },
@@ -179,15 +196,20 @@ export const SessionWhereUnique = t.Recursive(
           t.Object(
             {
               id: t.String(),
-              expiresAt: t.Date(),
-              token: t.String(),
+              firstname: t.String(),
+              lastname: t.String(),
+              gender: t.Union(
+                [t.Literal("MALE"), t.Literal("FEMALE"), t.Literal("OTHER")],
+                { additionalProperties: false },
+              ),
+              dateOfBirth: t.Date(),
+              idNumber: t.String(),
+              idType: t.Union([t.Literal("NRC"), t.Literal("PASSPORT")], {
+                additionalProperties: false,
+              }),
+              userId: t.String(),
               createdAt: t.Date(),
               updatedAt: t.Date(),
-              ipAddress: t.String(),
-              userAgent: t.String(),
-              userId: t.String(),
-              activeOrganizationId: t.String(),
-              impersonatedBy: t.String(),
             },
             { additionalProperties: false },
           ),
@@ -195,46 +217,60 @@ export const SessionWhereUnique = t.Recursive(
       ],
       { additionalProperties: false },
     ),
-  { $id: "Session" },
+  { $id: "Profile" },
 );
 
-export const SessionSelect = t.Partial(
+export const ProfileSelect = t.Partial(
   t.Object(
     {
       id: t.Boolean(),
-      expiresAt: t.Boolean(),
-      token: t.Boolean(),
-      createdAt: t.Boolean(),
-      updatedAt: t.Boolean(),
-      ipAddress: t.Boolean(),
-      userAgent: t.Boolean(),
+      firstname: t.Boolean(),
+      lastname: t.Boolean(),
+      gender: t.Boolean(),
+      dateOfBirth: t.Boolean(),
+      idNumber: t.Boolean(),
+      idType: t.Boolean(),
       userId: t.Boolean(),
       user: t.Boolean(),
-      activeOrganizationId: t.Boolean(),
-      impersonatedBy: t.Boolean(),
+      createdAt: t.Boolean(),
+      updatedAt: t.Boolean(),
       _count: t.Boolean(),
     },
     { additionalProperties: false },
   ),
 );
 
-export const SessionInclude = t.Partial(
+export const ProfileInclude = t.Partial(
   t.Object(
-    { user: t.Boolean(), _count: t.Boolean() },
+    {
+      gender: t.Boolean(),
+      idType: t.Boolean(),
+      user: t.Boolean(),
+      _count: t.Boolean(),
+    },
     { additionalProperties: false },
   ),
 );
 
-export const SessionOrderBy = t.Partial(
+export const ProfileOrderBy = t.Partial(
   t.Object(
     {
       id: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      expiresAt: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      firstname: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      token: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      lastname: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      dateOfBirth: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      idNumber: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      userId: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
       createdAt: t.Union([t.Literal("asc"), t.Literal("desc")], {
@@ -243,36 +279,21 @@ export const SessionOrderBy = t.Partial(
       updatedAt: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      ipAddress: t.Union([t.Literal("asc"), t.Literal("desc")], {
-        additionalProperties: false,
-      }),
-      userAgent: t.Union([t.Literal("asc"), t.Literal("desc")], {
-        additionalProperties: false,
-      }),
-      userId: t.Union([t.Literal("asc"), t.Literal("desc")], {
-        additionalProperties: false,
-      }),
-      activeOrganizationId: t.Union([t.Literal("asc"), t.Literal("desc")], {
-        additionalProperties: false,
-      }),
-      impersonatedBy: t.Union([t.Literal("asc"), t.Literal("desc")], {
-        additionalProperties: false,
-      }),
     },
     { additionalProperties: false },
   ),
 );
 
-export const Session = t.Composite([SessionPlain, SessionRelations], {
+export const Profile = t.Composite([ProfilePlain, ProfileRelations], {
   additionalProperties: false,
 });
 
-export const SessionInputCreate = t.Composite(
-  [SessionPlainInputCreate, SessionRelationsInputCreate],
+export const ProfileInputCreate = t.Composite(
+  [ProfilePlainInputCreate, ProfileRelationsInputCreate],
   { additionalProperties: false },
 );
 
-export const SessionInputUpdate = t.Composite(
-  [SessionPlainInputUpdate, SessionRelationsInputUpdate],
+export const ProfileInputUpdate = t.Composite(
+  [ProfilePlainInputUpdate, ProfileRelationsInputUpdate],
   { additionalProperties: false },
 );

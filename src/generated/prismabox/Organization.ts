@@ -12,6 +12,15 @@ export const OrganizationPlain = t.Object(
     logo: __nullable__(t.String()),
     createdAt: t.Date(),
     metadata: __nullable__(t.String()),
+    type: t.Union(
+      [t.Literal("CLINIC"), t.Literal("STORE"), t.Literal("SHELTER")],
+      { additionalProperties: false },
+    ),
+    contactEmail: __nullable__(t.String()),
+    phone: __nullable__(t.String()),
+    licenseId: __nullable__(t.String()),
+    services: __nullable__(t.Any()),
+    isActive: t.Boolean(),
   },
   { additionalProperties: false },
 );
@@ -46,6 +55,19 @@ export const OrganizationRelations = t.Object(
       ),
       { additionalProperties: false },
     ),
+    address: __nullable__(
+      t.Object(
+        {
+          id: t.String(),
+          number: t.String(),
+          street: t.String(),
+          city: t.String(),
+          province: t.String(),
+          orgId: t.String(),
+        },
+        { additionalProperties: false },
+      ),
+    ),
   },
   { additionalProperties: false },
 );
@@ -57,6 +79,14 @@ export const OrganizationPlainInputCreate = t.Object(
     logo: t.Optional(__nullable__(t.String())),
     createdAt: t.Date(),
     metadata: t.Optional(__nullable__(t.String())),
+    type: t.Union(
+      [t.Literal("CLINIC"), t.Literal("STORE"), t.Literal("SHELTER")],
+      { additionalProperties: false },
+    ),
+    contactEmail: t.Optional(__nullable__(t.String())),
+    phone: t.Optional(__nullable__(t.String())),
+    services: t.Optional(__nullable__(t.Any())),
+    isActive: t.Optional(t.Boolean()),
   },
   { additionalProperties: false },
 );
@@ -68,6 +98,15 @@ export const OrganizationPlainInputUpdate = t.Object(
     logo: t.Optional(__nullable__(t.String())),
     createdAt: t.Optional(t.Date()),
     metadata: t.Optional(__nullable__(t.String())),
+    type: t.Optional(
+      t.Union([t.Literal("CLINIC"), t.Literal("STORE"), t.Literal("SHELTER")], {
+        additionalProperties: false,
+      }),
+    ),
+    contactEmail: t.Optional(__nullable__(t.String())),
+    phone: t.Optional(__nullable__(t.String())),
+    services: t.Optional(__nullable__(t.Any())),
+    isActive: t.Optional(t.Boolean()),
   },
   { additionalProperties: false },
 );
@@ -100,6 +139,19 @@ export const OrganizationRelationsInputCreate = t.Object(
               },
               { additionalProperties: false },
             ),
+            { additionalProperties: false },
+          ),
+        },
+        { additionalProperties: false },
+      ),
+    ),
+    address: t.Optional(
+      t.Object(
+        {
+          connect: t.Object(
+            {
+              id: t.String({ additionalProperties: false }),
+            },
             { additionalProperties: false },
           ),
         },
@@ -163,6 +215,20 @@ export const OrganizationRelationsInputUpdate = t.Partial(
           { additionalProperties: false },
         ),
       ),
+      address: t.Partial(
+        t.Object(
+          {
+            connect: t.Object(
+              {
+                id: t.String({ additionalProperties: false }),
+              },
+              { additionalProperties: false },
+            ),
+            disconnect: t.Boolean(),
+          },
+          { additionalProperties: false },
+        ),
+      ),
     },
     { additionalProperties: false },
   ),
@@ -182,6 +248,15 @@ export const OrganizationWhere = t.Partial(
           logo: t.String(),
           createdAt: t.Date(),
           metadata: t.String(),
+          type: t.Union(
+            [t.Literal("CLINIC"), t.Literal("STORE"), t.Literal("SHELTER")],
+            { additionalProperties: false },
+          ),
+          contactEmail: t.String(),
+          phone: t.String(),
+          licenseId: t.String(),
+          services: t.Any(),
+          isActive: t.Boolean(),
         },
         { additionalProperties: false },
       ),
@@ -243,6 +318,15 @@ export const OrganizationWhereUnique = t.Recursive(
               logo: t.String(),
               createdAt: t.Date(),
               metadata: t.String(),
+              type: t.Union(
+                [t.Literal("CLINIC"), t.Literal("STORE"), t.Literal("SHELTER")],
+                { additionalProperties: false },
+              ),
+              contactEmail: t.String(),
+              phone: t.String(),
+              licenseId: t.String(),
+              services: t.Any(),
+              isActive: t.Boolean(),
             },
             { additionalProperties: false },
           ),
@@ -264,6 +348,13 @@ export const OrganizationSelect = t.Partial(
       metadata: t.Boolean(),
       members: t.Boolean(),
       invitations: t.Boolean(),
+      type: t.Boolean(),
+      address: t.Boolean(),
+      contactEmail: t.Boolean(),
+      phone: t.Boolean(),
+      licenseId: t.Boolean(),
+      services: t.Boolean(),
+      isActive: t.Boolean(),
       _count: t.Boolean(),
     },
     { additionalProperties: false },
@@ -272,7 +363,13 @@ export const OrganizationSelect = t.Partial(
 
 export const OrganizationInclude = t.Partial(
   t.Object(
-    { members: t.Boolean(), invitations: t.Boolean(), _count: t.Boolean() },
+    {
+      members: t.Boolean(),
+      invitations: t.Boolean(),
+      type: t.Boolean(),
+      address: t.Boolean(),
+      _count: t.Boolean(),
+    },
     { additionalProperties: false },
   ),
 );
@@ -296,6 +393,21 @@ export const OrganizationOrderBy = t.Partial(
         additionalProperties: false,
       }),
       metadata: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      contactEmail: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      phone: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      licenseId: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      services: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      isActive: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
     },

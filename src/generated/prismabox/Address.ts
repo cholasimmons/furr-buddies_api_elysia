@@ -4,18 +4,19 @@ import { __transformDate__ } from "./__transformDate__";
 
 import { __nullable__ } from "./__nullable__";
 
-export const MemberPlain = t.Object(
+export const AddressPlain = t.Object(
   {
     id: t.String(),
-    organizationId: t.String(),
-    userId: t.String(),
-    role: t.String(),
-    createdAt: t.Date(),
+    number: t.String(),
+    street: t.String(),
+    city: t.String(),
+    province: t.String(),
+    orgId: t.String(),
   },
   { additionalProperties: false },
 );
 
-export const MemberRelations = t.Object(
+export const AddressRelations = t.Object(
   {
     organization: t.Object(
       {
@@ -37,38 +38,31 @@ export const MemberRelations = t.Object(
       },
       { additionalProperties: false },
     ),
-    user: t.Object(
-      {
-        id: t.String(),
-        name: t.String(),
-        email: t.String(),
-        emailVerified: t.Boolean(),
-        image: __nullable__(t.String()),
-        createdAt: t.Date(),
-        updatedAt: t.Date(),
-        twoFactorEnabled: __nullable__(t.Boolean()),
-        role: __nullable__(t.String()),
-        banned: __nullable__(t.Boolean()),
-        banReason: __nullable__(t.String()),
-        banExpires: __nullable__(t.Date()),
-      },
-      { additionalProperties: false },
-    ),
   },
   { additionalProperties: false },
 );
 
-export const MemberPlainInputCreate = t.Object(
-  { role: t.String(), createdAt: t.Date() },
+export const AddressPlainInputCreate = t.Object(
+  {
+    number: t.String(),
+    street: t.String(),
+    city: t.String(),
+    province: t.String(),
+  },
   { additionalProperties: false },
 );
 
-export const MemberPlainInputUpdate = t.Object(
-  { role: t.Optional(t.String()), createdAt: t.Optional(t.Date()) },
+export const AddressPlainInputUpdate = t.Object(
+  {
+    number: t.Optional(t.String()),
+    street: t.Optional(t.String()),
+    city: t.Optional(t.String()),
+    province: t.Optional(t.String()),
+  },
   { additionalProperties: false },
 );
 
-export const MemberRelationsInputCreate = t.Object(
+export const AddressRelationsInputCreate = t.Object(
   {
     organization: t.Object(
       {
@@ -81,36 +75,14 @@ export const MemberRelationsInputCreate = t.Object(
       },
       { additionalProperties: false },
     ),
-    user: t.Object(
-      {
-        connect: t.Object(
-          {
-            id: t.String({ additionalProperties: false }),
-          },
-          { additionalProperties: false },
-        ),
-      },
-      { additionalProperties: false },
-    ),
   },
   { additionalProperties: false },
 );
 
-export const MemberRelationsInputUpdate = t.Partial(
+export const AddressRelationsInputUpdate = t.Partial(
   t.Object(
     {
       organization: t.Object(
-        {
-          connect: t.Object(
-            {
-              id: t.String({ additionalProperties: false }),
-            },
-            { additionalProperties: false },
-          ),
-        },
-        { additionalProperties: false },
-      ),
-      user: t.Object(
         {
           connect: t.Object(
             {
@@ -126,7 +98,7 @@ export const MemberRelationsInputUpdate = t.Partial(
   ),
 );
 
-export const MemberWhere = t.Partial(
+export const AddressWhere = t.Partial(
   t.Recursive(
     (Self) =>
       t.Object(
@@ -135,28 +107,33 @@ export const MemberWhere = t.Partial(
           NOT: t.Union([Self, t.Array(Self, { additionalProperties: false })]),
           OR: t.Array(Self, { additionalProperties: false }),
           id: t.String(),
-          organizationId: t.String(),
-          userId: t.String(),
-          role: t.String(),
-          createdAt: t.Date(),
+          number: t.String(),
+          street: t.String(),
+          city: t.String(),
+          province: t.String(),
+          orgId: t.String(),
         },
         { additionalProperties: false },
       ),
-    { $id: "Member" },
+    { $id: "Address" },
   ),
 );
 
-export const MemberWhereUnique = t.Recursive(
+export const AddressWhereUnique = t.Recursive(
   (Self) =>
     t.Intersect(
       [
         t.Partial(
-          t.Object({ id: t.String() }, { additionalProperties: false }),
+          t.Object(
+            { id: t.String(), orgId: t.String() },
+            { additionalProperties: false },
+          ),
           { additionalProperties: false },
         ),
-        t.Union([t.Object({ id: t.String() })], {
-          additionalProperties: false,
-        }),
+        t.Union(
+          [t.Object({ id: t.String() }), t.Object({ orgId: t.String() })],
+          { additionalProperties: false },
+        ),
         t.Partial(
           t.Object({
             AND: t.Union([
@@ -175,10 +152,11 @@ export const MemberWhereUnique = t.Recursive(
           t.Object(
             {
               id: t.String(),
-              organizationId: t.String(),
-              userId: t.String(),
-              role: t.String(),
-              createdAt: t.Date(),
+              number: t.String(),
+              street: t.String(),
+              city: t.String(),
+              province: t.String(),
+              orgId: t.String(),
             },
             { additionalProperties: false },
           ),
@@ -186,48 +164,51 @@ export const MemberWhereUnique = t.Recursive(
       ],
       { additionalProperties: false },
     ),
-  { $id: "Member" },
+  { $id: "Address" },
 );
 
-export const MemberSelect = t.Partial(
+export const AddressSelect = t.Partial(
   t.Object(
     {
       id: t.Boolean(),
-      organizationId: t.Boolean(),
+      number: t.Boolean(),
+      street: t.Boolean(),
+      city: t.Boolean(),
+      province: t.Boolean(),
+      orgId: t.Boolean(),
       organization: t.Boolean(),
-      userId: t.Boolean(),
-      user: t.Boolean(),
-      role: t.Boolean(),
-      createdAt: t.Boolean(),
       _count: t.Boolean(),
     },
     { additionalProperties: false },
   ),
 );
 
-export const MemberInclude = t.Partial(
+export const AddressInclude = t.Partial(
   t.Object(
-    { organization: t.Boolean(), user: t.Boolean(), _count: t.Boolean() },
+    { organization: t.Boolean(), _count: t.Boolean() },
     { additionalProperties: false },
   ),
 );
 
-export const MemberOrderBy = t.Partial(
+export const AddressOrderBy = t.Partial(
   t.Object(
     {
       id: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      organizationId: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      number: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      userId: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      street: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      role: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      city: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
-      createdAt: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      province: t.Union([t.Literal("asc"), t.Literal("desc")], {
+        additionalProperties: false,
+      }),
+      orgId: t.Union([t.Literal("asc"), t.Literal("desc")], {
         additionalProperties: false,
       }),
     },
@@ -235,16 +216,16 @@ export const MemberOrderBy = t.Partial(
   ),
 );
 
-export const Member = t.Composite([MemberPlain, MemberRelations], {
+export const Address = t.Composite([AddressPlain, AddressRelations], {
   additionalProperties: false,
 });
 
-export const MemberInputCreate = t.Composite(
-  [MemberPlainInputCreate, MemberRelationsInputCreate],
+export const AddressInputCreate = t.Composite(
+  [AddressPlainInputCreate, AddressRelationsInputCreate],
   { additionalProperties: false },
 );
 
-export const MemberInputUpdate = t.Composite(
-  [MemberPlainInputUpdate, MemberRelationsInputUpdate],
+export const AddressInputUpdate = t.Composite(
+  [AddressPlainInputUpdate, AddressRelationsInputUpdate],
   { additionalProperties: false },
 );

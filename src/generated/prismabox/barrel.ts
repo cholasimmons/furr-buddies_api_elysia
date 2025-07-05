@@ -1,4 +1,7 @@
 export * from "./Role";
+export * from "./Gender";
+export * from "./IdType";
+export * from "./OrgType";
 export * from "./User";
 export * from "./Session";
 export * from "./Account";
@@ -7,5 +10,7 @@ export * from "./Organization";
 export * from "./Member";
 export * from "./Invitation";
 export * from "./TwoFactor";
+export * from "./Profile";
+export * from "./Address";
 export * from "./__nullable__";
 export * from "./__transformDate__";

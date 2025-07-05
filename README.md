@@ -5,6 +5,11 @@
 bun i
 ```
 
+### Ensure your schema and database are sync'd
+```bash
+bunx @better-auth/cli generate
+```
+
 ## Prisma database server
 To fire up a Prisma development server, run:
 ```bash

@@ -1,4 +1,4 @@
-import { Elysia } from "elysia";
+import { Elysia, ValidationError } from "elysia";
 import cors from "@elysiajs/cors";
 import swagger from "@elysiajs/swagger";
 import { betterAuthMiddleware } from "~middleware/betterAuth";
@@ -6,10 +6,19 @@ import { Logestic } from "logestic";
 import { usersController, authController } from "~modules/index";
 import { OpenAPI } from "~utils/auth";
 import { HttpStatusCode } from "elysia-http-status-code";
+import { errorMessages } from "~middleware/errorCatcher";
+import customResponse from "~middleware/customResponse";
 
 const PORT = Bun.env.PORT ?? 3000;
 
 const app = new Elysia({ detail: { tags: ['Root'] } })
+.error({ ValidationError, Error })
+    // Error catching
+    .onError(errorMessages)
+
+    // response transformation
+    // .mapResponse(customResponse)
+
     // Cool console logging
     .use(Logestic.preset('common'))
     
@@ -41,10 +50,11 @@ const app = new Elysia({ detail: { tags: ['Root'] } })
         auth: true
     })
     .use(usersController)
+    
     .listen(PORT);
 
 console.log(
   `🦊 Elysia server running at ${app.server?.hostname}:${app.server?.port} 💻`
 );
-console.info('Endpoints to try: \n/auth/sign-up/email\n/auth/sign-in/email\n/user');
+console.info(`Check swagger endpoints: http://${app.server?.hostname}:${app.server?.port}/swagger`);
 

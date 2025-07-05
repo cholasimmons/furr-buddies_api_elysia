@@ -1,7 +1,7 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { admin as adminPlugin, openAPI, organization, twoFactor } from "better-auth/plugins";
-import { db } from "./prisma";
+import { db } from "./database";
 import consts from "~config/consts";
 
 const authBasePath = '/auth';
@@ -12,6 +12,19 @@ export const auth = betterAuth({
     }),
     emailAndPassword: {  
         enabled: true
+    },
+    session: {
+        cookieCache: {
+            enabled: true,
+            maxAge: 60 * 60 * 24 * 7 // 7 days
+        },
+        storeSessionInDatabase: false
+    },
+    advanced: {
+        useSecureCookies: true
+    },
+    hooks: {
+        // before / after hooks
     },
     plugins: [
         openAPI(),
