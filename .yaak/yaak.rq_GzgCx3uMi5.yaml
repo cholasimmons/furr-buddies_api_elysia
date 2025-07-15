@@ -1,0 +1,18 @@
+type: http_request
+model: http_request
+id: rq_GzgCx3uMi5
+createdAt: 2025-07-03T11:18:59.929375700
+updatedAt: 2025-07-15T07:19:23.102537300
+workspaceId: wk_eeEXFxQwjN
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: GET
+name: /users/admin
+sortPriority: 3000.0
+url: ${[ BASE_URL ]}/users/admin
+urlParameters: []

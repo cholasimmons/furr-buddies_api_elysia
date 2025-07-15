@@ -1,5 +1,5 @@
-import { Context, Elysia } from 'elysia';
-import { auth } from '../utils/auth';
+import { Context, Elysia, ValidationError } from 'elysia'
+import { auth } from '../utils/auth'
 
 export const betterAuthView = (request: Request): Promise<Response> => {
   console.log("💻 BetterAuth endpoint reached ", request.method, request.url);
@@ -24,14 +24,11 @@ export const betterAuthView = (request: Request): Promise<Response> => {
 
 // user middleware (compute user and session and pass to routes)
 export const betterAuthMiddleware = new Elysia({ name: 'better-auth' })
-    // Mount Better Auth handler (basePath set in /utils/auth.ts)
     .mount(betterAuthView)
+    // .all('/auth/*', betterAuthView)
     .macro({
         auth: {
             async resolve({ set, status, request: { headers } }:Context) {
-                // Implement cached session check
-                
-
                 const session = await auth.api.getSession({
                     headers
                 })

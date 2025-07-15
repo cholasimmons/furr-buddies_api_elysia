@@ -1,0 +1,14 @@
+type: workspace
+model: workspace
+id: wk_eeEXFxQwjN
+createdAt: 2025-07-03T10:01:11.354226100
+updatedAt: 2025-07-03T10:01:11.354227200
+authentication: {}
+authenticationType: null
+description: ''
+headers: []
+name: Furr Buddies
+encryptionKeyChallenge: null
+settingValidateCertificates: true
+settingFollowRedirects: true
+settingRequestTimeout: 0

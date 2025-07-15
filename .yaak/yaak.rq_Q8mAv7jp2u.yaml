@@ -1,0 +1,32 @@
+type: http_request
+model: http_request
+id: rq_Q8mAv7jp2u
+createdAt: 2025-07-03T10:03:42.764844300
+updatedAt: 2025-07-15T07:19:23.090596200
+workspaceId: wk_eeEXFxQwjN
+folderId: null
+authentication: {}
+authenticationType: null
+body:
+  form:
+  - enabled: true
+    name: email
+    value: simmonsfrank@gmail.com
+  - enabled: true
+    name: password
+    value: password
+  - enabled: true
+    name: ''
+    value: ''
+bodyType: application/x-www-form-urlencoded
+description: ''
+headers:
+- enabled: true
+  name: Content-Type
+  value: application/x-www-form-urlencoded
+  id: JtWAjNVCW7
+method: POST
+name: /auth/sign-in/email
+sortPriority: 1000.0
+url: ${[ BASE_URL ]}/auth/sign-in/email
+urlParameters: []

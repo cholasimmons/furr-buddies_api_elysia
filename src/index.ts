@@ -8,6 +8,7 @@ import { OpenAPI } from "~utils/auth";
 import { HttpStatusCode } from "elysia-http-status-code";
 import { errorMessages } from "~middleware/errorCatcher";
 import customResponse from "~middleware/customResponse";
+import { staticPlugin } from '@elysiajs/static';
 
 const PORT = Bun.env.PORT ?? 3000;
 
@@ -18,6 +19,14 @@ const app = new Elysia({ detail: { tags: ['Root'] } })
 
     // response transformation
     // .mapResponse(customResponse)
+
+    // Static file serving (all default values)
+    // (prefix: '/') conflicts with BetterAuth
+    .use(staticPlugin({
+        prefix: '/public',
+        assets: 'public',
+        indexHTML: false
+    }))
 
     // Cool console logging
     .use(Logestic.preset('common'))
@@ -44,6 +53,7 @@ const app = new Elysia({ detail: { tags: ['Root'] } })
 
     .use(betterAuthMiddleware)
     .use(authController)
+    .use(usersController)
     .get("/", () => "Hello Elysia")
     .get("/ping", () => "Pong")
     .get("/user", ({ user }:any) => user, {

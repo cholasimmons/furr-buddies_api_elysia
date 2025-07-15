@@ -1,0 +1,18 @@
+type: http_request
+model: http_request
+id: rq_oTm9gfzXE5
+createdAt: 2025-07-03T10:03:32.038303600
+updatedAt: 2025-07-15T07:19:23.096512300
+workspaceId: wk_eeEXFxQwjN
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: GET
+name: /users/user
+sortPriority: 2000.0
+url: ${[ BASE_URL ]}/users/user
+urlParameters: []

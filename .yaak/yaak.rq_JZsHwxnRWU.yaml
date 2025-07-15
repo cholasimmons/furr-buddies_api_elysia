@@ -1,0 +1,28 @@
+type: http_request
+model: http_request
+id: rq_JZsHwxnRWU
+createdAt: 2025-07-15T07:19:19.715156500
+updatedAt: 2025-07-15T07:20:11.794953
+workspaceId: wk_eeEXFxQwjN
+folderId: null
+authentication: {}
+authenticationType: null
+body:
+  form:
+  - enabled: true
+    name: email
+    value: simmonsfrank@gmail.com
+  - enabled: true
+    name: password
+    value: password
+  - enabled: true
+    name: ''
+    value: ''
+bodyType: null
+description: ''
+headers: []
+method: GET
+name: /auth/ok
+sortPriority: 5000.0
+url: ${[ BASE_URL ]}/auth/ok
+urlParameters: []

@@ -1,0 +1,35 @@
+type: http_request
+model: http_request
+id: rq_bym6NRN6xr
+createdAt: 2025-07-03T10:04:14.477261400
+updatedAt: 2025-07-15T07:20:46.323800600
+workspaceId: wk_eeEXFxQwjN
+folderId: null
+authentication: {}
+authenticationType: null
+body:
+  form:
+  - enabled: true
+    name: email
+    value: simmonsfrank@gmail.com
+  - enabled: true
+    name: password
+    value: password
+  - enabled: true
+    name: name
+    value: Frank Simmons
+  - enabled: true
+    name: ''
+    value: ''
+bodyType: application/x-www-form-urlencoded
+description: ''
+headers:
+- enabled: true
+  name: Content-Type
+  value: application/x-www-form-urlencoded
+  id: QFfg76wRuF
+method: POST
+name: /auth/sign-up/email
+sortPriority: 1500.0
+url: ${[ BASE_URL ]}/auth/sign-up/email
+urlParameters: []

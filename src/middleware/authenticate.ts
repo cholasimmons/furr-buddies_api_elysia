@@ -1,4 +1,5 @@
-import { Role } from "src/generated/prisma";
+import { HttpStatusEnum } from "elysia-http-status-code/status";
+import { Role, User } from "src/generated/prisma";
 
 
 // Assume your Better Auth setup makes the 'user' object available on the context,
@@ -13,7 +14,7 @@ interface AuthenticatedUser {
 
 // A type for the context that includes our 'user'
 type ContextWithUser = {
-  user: AuthenticatedUser | null;
+  user: User | null;
   set: { status: number | string; headers: Record<string, string> };
 };
 
@@ -32,10 +33,16 @@ export function authorize(requiredRoles: string | string[]) {
       return "Unauthorized: Please log in.";
     }
 
+    // Safety role check
+    if (!user.role) {
+      set.status = HttpStatusEnum.HTTP_403_FORBIDDEN; 
+      return "Forbidden: A User role is required";
+    }
+
     // 2. Check if the user has any of the required roles
     if (!rolesArray.includes(user.role)) {
       set.status = 403; // Forbidden
-      return `Forbidden: You do not have the required rights to access this resource.`;
+      return `Forbidden: You do not have permission to access this resource.`;
     }
 
     // If both checks pass, do nothing, and the request will proceed to the route handler
